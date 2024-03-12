@@ -19,7 +19,7 @@ export default function TaskEditPage() {
   useEffect(() => {
     setIsLoading(true);
     let isNewTask = true;
-    fetch(`./api/task/1`)
+    fetch(`./api/task`)
       .then((response: Response) => response.json())
       .then((tasks: Array<TaskType>) => {
         tasks.map((task: TaskType): void => {
@@ -36,6 +36,7 @@ export default function TaskEditPage() {
       .finally(() => {
         setIsLoading(false);
       });
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

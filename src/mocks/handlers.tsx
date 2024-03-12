@@ -6,6 +6,7 @@ const tasksList: Array<TaskType> = [];
 
 faker.seed(0);
 const tasksPerScroll: number = 15;
+const taskCount: number = 5000;
 
 for (let index = 0; index < 5000; index += 1) {
   tasksList.push({
@@ -22,10 +23,22 @@ for (let index = 0; index < 5000; index += 1) {
 }
 
 export const handlers = [
-  http.get("./api/task/:page", ({ params }) => {
+  http.get("./api/task/page=:page", ({ params }) => {
     const page: number = Number(params.page);
     const start: number = (page - 1) * tasksPerScroll;
     const end: number = start + tasksPerScroll;
+
     return HttpResponse.json(tasksList.slice(start, end));
+  }),
+  http.get("./api/task", () => {
+    return HttpResponse.json(tasksList);
+  }),
+  http.get("./api/task/count", () => {
+    return HttpResponse.json(taskCount);
+  }),
+  http.get("./api/task/id=:id", ({ params }) => {
+    const taskId: number = Number(params.id);
+
+    return HttpResponse.json(tasksList.find((task) => task.id === taskId));
   }),
 ];

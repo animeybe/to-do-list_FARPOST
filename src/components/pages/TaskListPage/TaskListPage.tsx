@@ -8,13 +8,14 @@ import "./TaskListPage.css";
 
 export default function TaskListPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [tasksCount, setTasksCount] = useState<number>();
   const [currentSortingType, setCurrentSortingType] = useState<string>(); //default, new, old
   const [limitedTasksList, setTasksToShow] = useState<Array<TaskType>>([]);
   const [numPage, setNumPage] = useState<number>(1);
 
   useEffect(() => {
     if (!limitedTasksList) setIsLoading(true);
-    fetch(`./api/task/${numPage}`)
+    fetch(`./api/task/page=${numPage}`)
       .then((response: Response) => response.json())
       .then((data: Array<TaskType>) => {
         setTasksToShow([...limitedTasksList, ...data]);
@@ -22,7 +23,12 @@ export default function TaskListPage() {
       .finally(() => {
         setIsLoading(false);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetch(`./api/task/count`)
+      .then((response: Response) => response.json())
+      .then((tasksCount: number) => {
+        setTasksCount(tasksCount);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [numPage]);
 
   useEffect(() => {
@@ -72,7 +78,7 @@ export default function TaskListPage() {
           <SelectionBlock setCurrentSortingType={setCurrentSortingType} />
         </div>
         <div className="right-block">
-          <Link to={`/${limitedTasksList?.length}/edit`}>
+          <Link to={`/${tasksCount}/edit`}>
             <div className="right-block__button">
               <ActiveButton text="Добавить задачу" />
             </div>

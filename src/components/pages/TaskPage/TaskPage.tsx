@@ -15,14 +15,17 @@ export default function TaskPage() {
 
   const params = useParams();
   const taskID: number = Number(params.id);
-  const currentTaskDateСreation: Date = new Date(String(currentTask?.dateСreation));
+  const currentTaskDateСreation: Date = new Date(
+    String(currentTask?.dateСreation)
+  );
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`./api/task/1`)
+    fetch(`./api/task/id=${taskID}`)
       .then((response: Response) => response.json())
-      .then((tasks: Array<TaskType>) => {
-        setCurrentTask(tasks[taskID]);
+      .then((task: TaskType) => {
+        console.log(task)
+        setCurrentTask(task);
       })
       .finally(() => {
         setIsLoading(false);
@@ -41,8 +44,8 @@ export default function TaskPage() {
             <ActiveButton text="Редактировать" />
           </Link>
         </div>
-        <div className="buttons-block-lright">
-          <Link to="/{taskID}/edit">
+        <div className="buttons-block-right">
+          <Link to={`/${taskID}/edit`}>
             <CloseButton text="Удалить" />
           </Link>
         </div>
@@ -64,7 +67,7 @@ export default function TaskPage() {
           <div className="task-block__priority">{currentTask?.priority}</div>
           <BlockTitle title="Отметки" />
           <div className="task-block__marks">
-            {currentTask?.marks.join(", ")}
+            {currentTask?.marks}
           </div>
           <BlockTitle title="Описание" />
           <div className="task-block__description">
