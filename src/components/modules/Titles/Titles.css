@@ -1,0 +1,16 @@
+.general-title {
+    min-height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.general-title__text {
+    font-size: 30px;
+    font-weight: 500;
+}
+.block-title{
+    color: #818181;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: .5px;
+}

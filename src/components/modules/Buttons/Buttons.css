@@ -1,0 +1,10 @@
+.active-button {
+    width: 10em;
+    height: 3em;
+
+    border-radius: 0.25em;
+    background-color: #0091DC;
+    color: #fff;
+}
+.close-button {
+}

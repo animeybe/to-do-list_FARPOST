@@ -1,0 +1,9 @@
+:root {
+    --main-ff: 'TildaSans',Arial,sans-serif;;
+  }
+
+body {
+    background-color: #F9FAFE;
+    font-family: var(--main-ff);
+    padding: 0 60px;
+}
