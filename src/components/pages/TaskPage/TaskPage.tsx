@@ -37,7 +37,7 @@ export default function TaskPage() {
           <Link to="/">
             <BackButton text="Назад" />
           </Link>
-          <Link to="/{taskID}/edit">
+          <Link to={`/${taskID}/edit`}>
             <ActiveButton text="Редактировать" />
           </Link>
         </div>

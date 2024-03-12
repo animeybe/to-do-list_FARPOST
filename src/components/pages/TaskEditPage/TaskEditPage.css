@@ -1,0 +1,45 @@
+.main-task-edit-content {
+}
+.buttons-block {
+}
+.task-edit-block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+    margin: 20px 0;
+    background-color: #fff;
+    border: 2px solid #f0f0f0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.task-edit-block__input-title,
+.task-edit-block__input-priority,
+.task-edit-block__input-description,
+.task-edit-block__input-marks {
+    padding: 10px;
+    margin: 10px 0 40px;
+    border: 2px solid #f0f0f0;
+    border-radius: 3px;
+    font-size: 16px;
+    font-weight: 500;
+}
+.task-edit-block__input-priority,
+.task-edit-block__input-marks {
+    max-width: 20em;
+    cursor: pointer;
+}
+.input-priority__item {
+    font-size: 16px;
+    font-weight: 500;
+}
+.task-edit-block__input-marks {
+    padding: 5px 10px;
+}
+.input-marks__mark {
+    padding: 5px;
+    transition: background-color 0.1s ease;
+}
+.input-marks__mark:hover {
+    background-color: #CECECE;
+}
