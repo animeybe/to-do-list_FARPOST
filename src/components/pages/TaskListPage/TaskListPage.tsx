@@ -9,21 +9,38 @@ import "./TaskListPage.css";
 export default function TaskListPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentSortingType, setCurrentSortingType] = useState<string>(); //default, new, old
-  const [initialTasksList, setInitialTasksList] = useState<Array<TaskType>>();
-  const [limitedTasksList, setTasksToShow] = useState<Array<TaskType>>();
+  const [limitedTasksList, setTasksToShow] = useState<Array<TaskType>>([]);
+  const [numPage, setNumPage] = useState<number>(1);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(`./api/task`)
+    if (!limitedTasksList) setIsLoading(true);
+    fetch(`./api/task/${numPage}`)
       .then((response: Response) => response.json())
-      .then((tasks: Array<TaskType>) => {
-        setInitialTasksList(tasks);
-        setTasksToShow(tasks);
+      .then((data: Array<TaskType>) => {
+        setTasksToShow([...limitedTasksList, ...data]);
       })
       .finally(() => {
         setIsLoading(false);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [numPage]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", LoadingTasks);
+    return () => {
+      window.removeEventListener("scroll", LoadingTasks);
+    };
   }, []);
+
+  const LoadingTasks = (): void => {
+    if (
+      document.documentElement.scrollHeight -
+        (window.innerHeight + document.documentElement.scrollTop) <
+      100
+    ) {
+      setNumPage((numPage) => numPage + 1);
+    }
+  };
 
   useEffect(() => {
     if (currentSortingType) {
@@ -55,7 +72,7 @@ export default function TaskListPage() {
           <SelectionBlock setCurrentSortingType={setCurrentSortingType} />
         </div>
         <div className="right-block">
-          <Link to={`/${initialTasksList?.length}/edit`}>
+          <Link to={`/${limitedTasksList?.length}/edit`}>
             <div className="right-block__button">
               <ActiveButton text="Добавить задачу" />
             </div>

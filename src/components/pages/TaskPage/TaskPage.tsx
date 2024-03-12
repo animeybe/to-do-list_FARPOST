@@ -15,11 +15,11 @@ export default function TaskPage() {
 
   const params = useParams();
   const taskID: number = Number(params.id);
-  const currentTaskDateСreation: Date = new Date(currentTask?.dateСreation);
+  const currentTaskDateСreation: Date = new Date(String(currentTask?.dateСreation));
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`./api/task`)
+    fetch(`./api/task/1`)
       .then((response: Response) => response.json())
       .then((tasks: Array<TaskType>) => {
         setCurrentTask(tasks[taskID]);
@@ -47,25 +47,31 @@ export default function TaskPage() {
           </Link>
         </div>
       </div>
-      <div className="task-block">
-        <BlockTitle title="Название задачи" />
-        <div className="task-block__title">{currentTask?.title}</div>
-        <BlockTitle title="Дата создания" />
-        <div className="task-block__date-creation">
-          {`${currentTaskDateСreation.toLocaleString("ru", {
-            month: "long",
-            day: "numeric",
-          })} ${currentTaskDateСreation.getFullYear()}, ${currentTaskDateСreation.getHours()}:${currentTaskDateСreation.getMinutes()}`}
+      {isLoading ? (
+        "LOADING..."
+      ) : (
+        <div className="task-block">
+          <BlockTitle title="Название задачи" />
+          <div className="task-block__title">{currentTask?.title}</div>
+          <BlockTitle title="Дата создания" />
+          <div className="task-block__date-creation">
+            {`${currentTaskDateСreation.toLocaleString("ru", {
+              month: "long",
+              day: "numeric",
+            })} ${currentTaskDateСreation.getFullYear()}, ${currentTaskDateСreation.getHours()}:${currentTaskDateСreation.getMinutes()}`}
+          </div>
+          <BlockTitle title="Приоритет" />
+          <div className="task-block__priority">{currentTask?.priority}</div>
+          <BlockTitle title="Отметки" />
+          <div className="task-block__marks">
+            {currentTask?.marks.join(", ")}
+          </div>
+          <BlockTitle title="Описание" />
+          <div className="task-block__description">
+            {currentTask?.description}
+          </div>
         </div>
-        <BlockTitle title="Приоритет" />
-        <div className="task-block__priority">{currentTask?.priority}</div>
-        <BlockTitle title="Отметки" />
-        <div className="task-block__marks">{currentTask?.marks.join(", ")}</div>
-        <BlockTitle title="Описание" />
-        <div className="task-block__description">
-          {currentTask?.description}
-        </div>
-      </div>
+      )}
     </main>
   );
 }

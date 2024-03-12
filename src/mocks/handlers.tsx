@@ -4,9 +4,10 @@ import { faker } from "@faker-js/faker";
 
 const tasksList: Array<TaskType> = [];
 
-faker.seed(0)
+faker.seed(0);
+const tasksPerScroll: number = 15;
 
-for (let index = 0; index < 20; index += 1) {
+for (let index = 0; index < 5000; index += 1) {
   tasksList.push({
     id: index,
     title: faker.lorem.sentence({ min: 2, max: 5 }),
@@ -21,7 +22,10 @@ for (let index = 0; index < 20; index += 1) {
 }
 
 export const handlers = [
-  http.get("./api/task", () => {
-    return HttpResponse.json(tasksList);
+  http.get("./api/task/:page", ({ params }) => {
+    const page: number = Number(params.page);
+    const start: number = (page - 1) * tasksPerScroll;
+    const end: number = start + tasksPerScroll;
+    return HttpResponse.json(tasksList.slice(start, end));
   }),
 ];

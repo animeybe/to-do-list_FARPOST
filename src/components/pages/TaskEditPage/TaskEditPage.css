@@ -40,6 +40,10 @@
     padding: 5px;
     transition: background-color 0.1s ease;
 }
+
 .input-marks__mark:hover {
+    background-color: #CECECE;
+}
+.input-marks__mark_select {
     background-color: #CECECE;
 }
