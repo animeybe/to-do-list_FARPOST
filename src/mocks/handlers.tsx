@@ -4,6 +4,8 @@ import { faker } from "@faker-js/faker";
 
 const tasksList: Array<TaskType> = [];
 
+faker.seed(0)
+
 for (let index = 0; index < 20; index += 1) {
   tasksList.push({
     id: index,

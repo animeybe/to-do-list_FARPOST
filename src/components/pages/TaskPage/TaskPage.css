@@ -4,6 +4,12 @@
 }
 .buttons-block {
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.buttons-block-left .back-button {
+    margin-right: 10px;
 }
 .task-block {
     width: 100%;
@@ -13,6 +19,7 @@
     background-color: #fff;
     border: 2px solid #f0f0f0;
     border-radius: 3px;
+    overflow: hidden;
 }
 .task-block__title,
 .task-block__date-creation,
@@ -21,7 +28,7 @@
 .task-block__description {
     font-size: 18px;
     font-weight: 500;
-    margin: 10px 0 40px;
+    margin: 20px 0 40px;
 }
 
 .task-block__title {
