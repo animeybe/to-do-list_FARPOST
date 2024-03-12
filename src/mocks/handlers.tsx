@@ -38,7 +38,10 @@ export const handlers = [
   }),
   http.get("./api/task/id=:id", ({ params }) => {
     const taskId: number = Number(params.id);
+    const currentTask: TaskType | undefined = tasksList.find(
+      (task) => task.id === taskId
+    );
 
-    return HttpResponse.json(tasksList.find((task) => task.id === taskId));
+    return HttpResponse.json(currentTask ? currentTask : null);
   }),
 ];

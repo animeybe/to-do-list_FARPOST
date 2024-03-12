@@ -18,25 +18,22 @@ export default function TaskEditPage() {
 
   useEffect(() => {
     setIsLoading(true);
-    let isNewTask = true;
-    fetch(`./api/task`)
+    fetch(`./api/task/id=${taskID}`)
       .then((response: Response) => response.json())
-      .then((tasks: Array<TaskType>) => {
-        tasks.map((task: TaskType): void => {
-          if (task.id === taskID) {
-            setCurrentTask(tasks[taskID]);
-            setCurrentTaskTitle(tasks[taskID].title);
-            setCurrentTaskDescription(tasks[taskID].description);
-            isNewTask = false;
-            return;
-          }
-        });
-        setIsNewTask(isNewTask);
+      .then((task: TaskType | null) => {
+        if (task === null) {
+          setIsNewTask(true);
+        } else {
+          setCurrentTask(task);
+          setCurrentTaskTitle(task.title);
+          setCurrentTaskDescription(task.description);
+          setIsNewTask(false);
+        }
       })
       .finally(() => {
         setIsLoading(false);
       });
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -65,26 +62,17 @@ export default function TaskEditPage() {
               }}
             />
             <BlockTitle title="Приоритет" />
-            <select className="task-edit-block__input-priority">
-              <option
-                className="input-priority__item"
-                value="low"
-                selected={currentTask?.priority === "low"}
-              >
+            <select
+              defaultValue={currentTask?.priority}
+              className="task-edit-block__input-priority"
+            >
+              <option className="input-priority__item" value="low">
                 low
               </option>
-              <option
-                className="input-priority__item"
-                value="normal"
-                selected={currentTask?.priority === "normal"}
-              >
+              <option className="input-priority__item" value="normal">
                 normal
               </option>
-              <option
-                className="input-priority__item"
-                value="high"
-                selected={currentTask?.priority === "high"}
-              >
+              <option className="input-priority__item" value="high">
                 high
               </option>
             </select>

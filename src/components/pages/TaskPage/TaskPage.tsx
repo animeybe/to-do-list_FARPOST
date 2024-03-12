@@ -24,7 +24,6 @@ export default function TaskPage() {
     fetch(`./api/task/id=${taskID}`)
       .then((response: Response) => response.json())
       .then((task: TaskType) => {
-        console.log(task)
         setCurrentTask(task);
       })
       .finally(() => {
@@ -66,9 +65,7 @@ export default function TaskPage() {
           <BlockTitle title="Приоритет" />
           <div className="task-block__priority">{currentTask?.priority}</div>
           <BlockTitle title="Отметки" />
-          <div className="task-block__marks">
-            {currentTask?.marks}
-          </div>
+          <div className="task-block__marks">{currentTask?.marks}</div>
           <BlockTitle title="Описание" />
           <div className="task-block__description">
             {currentTask?.description}
