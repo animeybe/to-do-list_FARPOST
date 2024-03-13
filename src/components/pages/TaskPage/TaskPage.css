@@ -1,12 +1,16 @@
 .main-task-content {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .buttons-block {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+.buttons-block-left {
+    display: flex;
 }
 .buttons-block-left .back-button {
     margin-right: 10px;
@@ -30,13 +34,23 @@
     margin: 20px 0 40px;
 }
 
-.task-block__title {
-}
-.task-block__date-creation {
-}
-.task-block__priority {
-}
-.task-block__marks {
-}
-.task-block__description {
+@media (max-width: 410px) {
+    .buttons-block__back {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .buttons-block__edit {
+        position: absolute;
+        top: calc(3em + 5px);
+        width: 80%;
+    }
+    .buttons-block__delete {
+        position: absolute;
+        top: 0;
+        left: calc(5em + 5px);
+    }
+    .main-task-content {
+        padding-top: 6em;
+    }
 }

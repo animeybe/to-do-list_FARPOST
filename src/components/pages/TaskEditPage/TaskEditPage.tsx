@@ -8,10 +8,15 @@ import "./TaskEditPage.css";
 export default function TaskEditPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isNewTask, setIsNewTask] = useState<boolean>();
-  const [currentTask, setCurrentTask] = useState<TaskType>();
-  const [currentTaskTitle, setCurrentTaskTitle] = useState<string>();
+  const [isCreation, setIsCreation] = useState<boolean>();
+  const [currentTaskTitle, setCurrentTaskTitle] = useState<string>("");
+  const [currentTaskDateСreation, setCurrentTaskDateСreation] = useState<Date>(
+    new Date()
+  );
+  const [currentTaskPriority, setCurrentTaskPriority] = useState<string>("low");
+  const [currentTaskMarks, setCurrentTaskMarks] = useState<Array<string>>([]);
   const [currentTaskDescription, setCurrentTaskDescription] =
-    useState<string>();
+    useState<string>("");
 
   const params = useParams();
   const taskID: number = Number(params.id);
@@ -24,9 +29,11 @@ export default function TaskEditPage() {
         if (task === null) {
           setIsNewTask(true);
         } else {
-          setCurrentTask(task);
           setCurrentTaskTitle(task.title);
+          setCurrentTaskDateСreation(task.dateСreation);
           setCurrentTaskDescription(task.description);
+          setCurrentTaskPriority(task.priority);
+          setCurrentTaskMarks(task.marks);
           setIsNewTask(false);
         }
       })
@@ -36,6 +43,25 @@ export default function TaskEditPage() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function handleClickSave() {
+    const newTask: TaskType = {
+      id: taskID,
+      title: currentTaskTitle,
+      description: currentTaskDescription,
+      dateСreation: currentTaskDateСreation,
+      priority: currentTaskPriority,
+      marks: currentTaskMarks,
+    };
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newTask),
+    };
+
+    fetch("./api/task/new", requestOptions);
+  }
 
   return (
     <>
@@ -56,14 +82,17 @@ export default function TaskEditPage() {
             <input
               type="text"
               className="task-edit-block__input-title"
-              value={currentTaskTitle}
+              defaultValue={currentTaskTitle}
               onChange={({ target: { value } }) => {
                 setCurrentTaskTitle(value);
               }}
             />
             <BlockTitle title="Приоритет" />
             <select
-              defaultValue={currentTask?.priority}
+              defaultValue={currentTaskPriority}
+              onChange={({ target: { value } }) => {
+                setCurrentTaskPriority(value);
+              }}
               className="task-edit-block__input-priority"
             >
               <option className="input-priority__item" value="low">
@@ -79,8 +108,29 @@ export default function TaskEditPage() {
             <BlockTitle title="Отметки" />
             <div className="task-edit-block__input-marks">
               <div
+                onClick={(e) => {
+                  e.currentTarget.classList.toggle("input-marks__mark_select");
+                  if (
+                    e.currentTarget.classList.contains(
+                      "input-marks__mark_select"
+                    )
+                  ) {
+                    const newMarks: Array<string> = [
+                      ...currentTaskMarks,
+                      "research",
+                    ];
+                    setCurrentTaskMarks(newMarks);
+                  } else {
+                    const newMarks: Array<string> = currentTaskMarks.filter(
+                      (mark: string) => {
+                        return mark !== "research";
+                      }
+                    );
+                    setCurrentTaskMarks(newMarks);
+                  }
+                }}
                 className={`input-marks__mark${
-                  currentTask?.marks.some((item) => item === "research") &&
+                  currentTaskMarks.some((item) => item === "research") &&
                   !isNewTask
                     ? " input-marks__mark_select"
                     : ""
@@ -89,8 +139,29 @@ export default function TaskEditPage() {
                 research
               </div>
               <div
+                onClick={(e) => {
+                  e.currentTarget.classList.toggle("input-marks__mark_select");
+                  if (
+                    e.currentTarget.classList.contains(
+                      "input-marks__mark_select"
+                    )
+                  ) {
+                    const newMarks: Array<string> = [
+                      ...currentTaskMarks,
+                      "design",
+                    ];
+                    setCurrentTaskMarks(newMarks);
+                  } else {
+                    const newMarks: Array<string> = currentTaskMarks.filter(
+                      (mark: string) => {
+                        return mark !== "design";
+                      }
+                    );
+                    setCurrentTaskMarks(newMarks);
+                  }
+                }}
                 className={`input-marks__mark${
-                  currentTask?.marks.some((item) => item === "design") &&
+                  currentTaskMarks.some((item) => item === "design") &&
                   !isNewTask
                     ? " input-marks__mark_select"
                     : ""
@@ -99,8 +170,29 @@ export default function TaskEditPage() {
                 design
               </div>
               <div
+                onClick={(e) => {
+                  e.currentTarget.classList.toggle("input-marks__mark_select");
+                  if (
+                    e.currentTarget.classList.contains(
+                      "input-marks__mark_select"
+                    )
+                  ) {
+                    const newMarks: Array<string> = [
+                      ...currentTaskMarks,
+                      "development",
+                    ];
+                    setCurrentTaskMarks(newMarks);
+                  } else {
+                    const newMarks: Array<string> = currentTaskMarks.filter(
+                      (mark: string) => {
+                        return mark !== "development";
+                      }
+                    );
+                    setCurrentTaskMarks(newMarks);
+                  }
+                }}
                 className={`input-marks__mark${
-                  currentTask?.marks.some((item) => item === "development") &&
+                  currentTaskMarks.some((item) => item === "development") &&
                   !isNewTask
                     ? " input-marks__mark_select"
                     : ""
@@ -118,7 +210,10 @@ export default function TaskEditPage() {
                 setCurrentTaskDescription(value);
               }}
             />
-            <ActiveButton text="Сохранить" />
+            <ActiveButton
+              onClick={isNewTask ? handleClickSave : () => {}}
+              text="Сохранить"
+            />
           </div>
         )}
       </main>

@@ -7,3 +7,9 @@ body {
     font-family: var(--main-ff);
     padding: 0 60px;
 }
+
+@media (max-width: 360px) {
+  body {
+    padding: 0 20px;
+  }
+}

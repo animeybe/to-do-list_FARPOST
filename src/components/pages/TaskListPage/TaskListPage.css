@@ -1,10 +1,15 @@
 .main-task-list-content {
     display: flex;
     flex-direction: row;
+    position: relative;
+
+    min-width: 200px;
 
     margin-top: 40px;
 }
-.left-block {
+.left-block  {
+    height: 100%;
+    width: 20vw;
 }
 .right-block {
     display: flex;
@@ -16,7 +21,31 @@
 .right-block__button {
     margin-bottom: 20px;
 }
+
 .tasksSection {
     width: 100%;
     height: 100%;
+}
+@media (max-width: 670px) {
+    .main-task-list-content {
+        flex-direction: column;
+        align-items: center;
+    }
+    .left-block  {
+        width: 100%;
+        margin-top: calc(3em + 10px);
+        margin-bottom: 20px;
+    }
+    .right-block__button {
+        position: absolute;
+        top: 0;
+    }
+}
+@media (max-width: 320px) {
+    .right-block__button {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 }

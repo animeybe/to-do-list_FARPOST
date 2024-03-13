@@ -1,15 +1,28 @@
 import "./Buttons.css";
 
 interface ButtonType {
+  onClick?: () => void;
   text: string;
 }
 
-export function ActiveButton({ text }: ButtonType) {
-  return <button className="active-button">{text}</button>;
+export function ActiveButton({ text, onClick }: ButtonType) {
+  return (
+    <button onClick={onClick} className="active-button">
+      {text}
+    </button>
+  );
 }
-export function BackButton({ text }: ButtonType) {
-  return <button className="back-button">{text}</button>;
+export function BackButton({ text, onClick }: ButtonType) {
+  return (
+    <button onClick={onClick} className="back-button">
+      {text}
+    </button>
+  );
 }
-export function CloseButton({ text }: ButtonType) {
-  return <button className="close-button">{text}</button>;
+export function CloseButton({ text, onClick }: ButtonType) {
+  return (
+    <button onClick={onClick} className="close-button">
+      {text}
+    </button>
+  );
 }

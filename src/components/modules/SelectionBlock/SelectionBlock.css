@@ -1,5 +1,5 @@
 .selection-block-wrapper {
-    width: 20vw;
+    width: 100%;
 }
 .sort-wrapper,
 .priority-and-mark-wrapper {
@@ -100,8 +100,33 @@
 .sort-wrapper {
     margin-bottom: 1.5em;
 }
-.priority-and-mark-wrapper {
-}
 .priority-wrapper {
     margin-bottom: 2em;
+}
+.mark-wrapper {
+}
+@media (max-width: 670px) {
+    .priority-and-mark-wrapper {
+        display: flex;
+        align-items: center;
+    }
+    .priority-wrapper {
+        margin-right: 2em;
+        margin-bottom: 0;
+    }
+}
+@media (max-width: 320px) {
+    .priority-and-mark-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+    }
+    .sort-wrapper {
+        display: flex;
+        flex-direction: column;
+    }
+    .priority-wrapper {
+        margin-right: 0;
+        margin-bottom: 2em;
+    }
 }

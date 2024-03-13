@@ -38,16 +38,6 @@ export default function TaskListPage() {
     };
   }, []);
 
-  const LoadingTasks = (): void => {
-    if (
-      document.documentElement.scrollHeight -
-        (window.innerHeight + document.documentElement.scrollTop) <
-      100
-    ) {
-      setNumPage((numPage) => numPage + 1);
-    }
-  };
-
   useEffect(() => {
     if (currentSortingType) {
       console.log(currentSortingType);
@@ -68,6 +58,16 @@ export default function TaskListPage() {
       setTasksToShow(sorted);
     }
   }, [currentSortingType, limitedTasksList]);
+
+  const LoadingTasks = (): void => {
+    if (
+      document.documentElement.scrollHeight -
+        (window.innerHeight + document.documentElement.scrollTop) <
+      100
+    ) {
+      setNumPage((numPage) => numPage + 1);
+    }
+  };
 
   return (
     <>
