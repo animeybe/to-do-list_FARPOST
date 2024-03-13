@@ -1,6 +1,6 @@
 import "./Buttons.css";
 
-interface ButtonType {
+type ButtonType = {
   onClick?: () => void;
   text: string;
 }

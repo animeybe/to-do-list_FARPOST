@@ -1,12 +1,24 @@
 import { BlockTitle } from "../Titles/Titles";
 import "./SelectionBlock.css";
 
-interface setStateForProps {
-  setCurrentSortingType: React.Dispatch<React.SetStateAction<string | undefined>>;
-}
+type setStateForProps = {
+  setTypeSort: React.Dispatch<React.SetStateAction<string>>;
+  setFilterMarks: React.Dispatch<React.SetStateAction<Array<string>>>;
+  setFilterPriority: React.Dispatch<React.SetStateAction<Array<string>>>;
+  setIsSorting: React.Dispatch<React.SetStateAction<boolean>>;
+  filterMarks: Array<string>;
+  filterPriority: Array<string>;
+  typeSort: string;
+};
 
 export default function SelectionBlock({
-  setCurrentSortingType,
+  setTypeSort,
+  typeSort,
+  setFilterPriority,
+  setFilterMarks,
+  filterMarks,
+  filterPriority,
+  setIsSorting,
 }: setStateForProps) {
   return (
     <>
@@ -18,7 +30,15 @@ export default function SelectionBlock({
           <div className="sort__item sort__item_new">
             <input
               onChange={({ target: { value } }) => {
-                setCurrentSortingType(value);
+                setIsSorting(true);
+                setTypeSort(value);
+              }}
+              onClick={({ currentTarget }) => {
+                if (typeSort === currentTarget.value) {
+                  currentTarget.checked = false;
+                  setIsSorting(true);
+                  setTypeSort("default");
+                }
               }}
               className="radio"
               type="radio"
@@ -32,7 +52,15 @@ export default function SelectionBlock({
           <div className="sort__item sort__item_old">
             <input
               onChange={({ target: { value } }) => {
-                setCurrentSortingType(value);
+                setIsSorting(true);
+                setTypeSort(value);
+              }}
+              onClick={({ currentTarget }) => {
+                if (typeSort === currentTarget.value) {
+                  currentTarget.checked = false;
+                  setIsSorting(true);
+                  setTypeSort("default");
+                }
               }}
               className="radio"
               type="radio"
@@ -51,6 +79,16 @@ export default function SelectionBlock({
             </div>
             <div className="priority__item priority__item_low">
               <input
+                onChange={({ target: { value } }) => {
+                  if (filterPriority.indexOf(value) === -1) {
+                    setFilterPriority([...filterPriority, value]);
+                  } else {
+                    setFilterPriority((filterPriority) =>
+                      filterPriority.filter((task) => task !== value)
+                    );
+                  }
+                  setIsSorting(true);
+                }}
                 className="checkbox"
                 type="checkbox"
                 value="low"
@@ -62,6 +100,16 @@ export default function SelectionBlock({
             </div>
             <div className="priority__item priority__item_normal">
               <input
+                onChange={({ target: { value } }) => {
+                  if (filterPriority.indexOf(value) === -1) {
+                    setFilterPriority([...filterPriority, value]);
+                  } else {
+                    setFilterPriority((filterPriority) =>
+                      filterPriority.filter((task) => task !== value)
+                    );
+                  }
+                  setIsSorting(true);
+                }}
                 className="checkbox"
                 type="checkbox"
                 value="normal"
@@ -73,6 +121,16 @@ export default function SelectionBlock({
             </div>
             <div className="priority__item priority__item_high">
               <input
+                onChange={({ target: { value } }) => {
+                  if (filterPriority.indexOf(value) === -1) {
+                    setFilterPriority([...filterPriority, value]);
+                  } else {
+                    setFilterPriority((filterPriority) =>
+                      filterPriority.filter((task) => task !== value)
+                    );
+                  }
+                  setIsSorting(true);
+                }}
                 className="checkbox"
                 type="checkbox"
                 value="high"
@@ -89,6 +147,16 @@ export default function SelectionBlock({
             </div>
             <div className="mark__item mark__item_low">
               <input
+                onChange={({ target: { value } }) => {
+                  if (filterMarks.indexOf(value) === -1) {
+                    setFilterMarks([...filterMarks, value]);
+                  } else {
+                    setFilterMarks((filterMarks) =>
+                      filterMarks.filter((task) => task !== value)
+                    );
+                  }
+                  setIsSorting(true);
+                }}
                 className="checkbox"
                 type="checkbox"
                 value="research"
@@ -100,6 +168,16 @@ export default function SelectionBlock({
             </div>
             <div className="mark__item mark__item_new">
               <input
+                onChange={({ target: { value } }) => {
+                  if (filterMarks.indexOf(value) === -1) {
+                    setFilterMarks([...filterMarks, value]);
+                  } else {
+                    setFilterMarks((filterMarks) =>
+                      filterMarks.filter((task) => task !== value)
+                    );
+                  }
+                  setIsSorting(true);
+                }}
                 className="checkbox"
                 type="checkbox"
                 value="design"
@@ -111,6 +189,16 @@ export default function SelectionBlock({
             </div>
             <div className="mark__item mark__item_new">
               <input
+                onChange={({ target: { value } }) => {
+                  if (filterMarks.indexOf(value) === -1) {
+                    setFilterMarks([...filterMarks, value]);
+                  } else {
+                    setFilterMarks((filterMarks) =>
+                      filterMarks.filter((task) => task !== value)
+                    );
+                  }
+                  setIsSorting(true);
+                }}
                 className="checkbox"
                 type="checkbox"
                 value="development"

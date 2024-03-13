@@ -1,6 +1,6 @@
 import "./Titles.css";
 
-interface TitleType {
+type TitleType = {
   title: string;
 }
 export function GeneralTitle({ title }: TitleType) {

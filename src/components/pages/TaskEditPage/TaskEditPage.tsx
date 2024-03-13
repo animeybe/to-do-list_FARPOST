@@ -3,12 +3,13 @@ import { BlockTitle, GeneralTitle } from "../../modules/Titles/Titles";
 import { TaskType } from "../../modules/TaskCard/TaskCard";
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Loading from "../../modules/Loading/Loading";
 import "./TaskEditPage.css";
 
 export default function TaskEditPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isNewTask, setIsNewTask] = useState<boolean>();
-  const [isCreation, setIsCreation] = useState<boolean>();
+  // const [isCreation, setIsCreation] = useState<boolean>();
   const [currentTaskTitle, setCurrentTaskTitle] = useState<string>("");
   const [currentTaskDateСreation, setCurrentTaskDateСreation] = useState<Date>(
     new Date()
@@ -23,7 +24,8 @@ export default function TaskEditPage() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`./api/task/id=${taskID}`)
+    const url:string = "https://example.com/task"
+    fetch(`${url}/id=${taskID}`)
       .then((response: Response) => response.json())
       .then((task: TaskType | null) => {
         if (task === null) {
@@ -37,6 +39,7 @@ export default function TaskEditPage() {
           setIsNewTask(false);
         }
       })
+      .catch((error) => console.log(`Error - ${error}`))
       .finally(() => {
         setIsLoading(false);
       });
@@ -60,7 +63,8 @@ export default function TaskEditPage() {
       body: JSON.stringify(newTask),
     };
 
-    fetch("./api/task/new", requestOptions);
+    const url:string = "https://example.com/task"
+    fetch(`${url}/new`, requestOptions);
   }
 
   return (
@@ -75,7 +79,7 @@ export default function TaskEditPage() {
           </Link>
         </div>
         {isLoading ? (
-          "LOADING..."
+          <Loading />
         ) : (
           <div className="task-edit-block">
             <BlockTitle title="Название задачи" />

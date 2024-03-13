@@ -3,33 +3,73 @@ import { ActiveButton } from "../../modules/Buttons/Buttons";
 import { GeneralTitle } from "../../modules/Titles/Titles";
 import { TaskType, TaskCard } from "../../modules/TaskCard/TaskCard";
 import { useState, useEffect } from "react";
+import Loading from "../../modules/Loading/Loading";
 import { Link } from "react-router-dom";
 import "./TaskListPage.css";
 
+type responseData = {
+  selectedList: Array<TaskType>;
+};
+
 export default function TaskListPage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSorting, setIsSorting] = useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState<boolean>(true);
   const [tasksCount, setTasksCount] = useState<number>();
-  const [currentSortingType, setCurrentSortingType] = useState<string>(); //default, new, old
-  const [limitedTasksList, setTasksToShow] = useState<Array<TaskType>>([]);
+  const [tasksToShow, setTasksToShow] = useState<Array<TaskType>>([]);
   const [numPage, setNumPage] = useState<number>(1);
+  const [typeSort, setTypeSort] = useState<string>("default"); // default, new, old
+  const [filterMarks, setFilterMarks] = useState<Array<string>>([]);
+  const [filterPriority, setFilterPriority] = useState<Array<string>>([]);
 
   useEffect(() => {
-    if (!limitedTasksList) setIsLoading(true);
-    fetch(`./api/task/page=${numPage}`)
-      .then((response: Response) => response.json())
-      .then((data: Array<TaskType>) => {
-        setTasksToShow([...limitedTasksList, ...data]);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-    fetch(`./api/task/count`)
+    if (isFetching || isSorting) {
+      const filterData = {
+        page: numPage,
+        sort: typeSort,
+        filterMarks: filterMarks,
+        filterPriority: filterPriority,
+        isSorting: isSorting,
+      };
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(filterData),
+      };
+
+      if (!tasksToShow) setIsLoading(true);
+      const url: string = "https://example.com/task";
+
+      fetch(`${url}`, requestOptions)
+        .then((response: Response) => response.json())
+        .then((data: responseData) => {
+          if (isSorting) {
+            setTasksToShow(data.selectedList);
+            setIsSorting(false);
+          } else {
+            setTasksToShow([...tasksToShow, ...data.selectedList]);
+            setNumPage(() => numPage + 1);
+          }
+        })
+        .catch((error) => console.log(`Error - ${error}`))
+        .finally(() => {
+          setIsFetching(false);
+          setIsLoading(false);
+        });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetching, isSorting]);
+
+  useEffect(() => {
+    const url: string = "https://example.com/task";
+    fetch(`${url}/count`)
       .then((response: Response) => response.json())
       .then((tasksCount: number) => {
         setTasksCount(tasksCount);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [numPage]);
+      })
+      .catch((error) => console.log(`Error - ${error}`));
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", LoadingTasks);
@@ -38,34 +78,13 @@ export default function TaskListPage() {
     };
   }, []);
 
-  useEffect(() => {
-    if (currentSortingType) {
-      console.log(currentSortingType);
-      let sorted;
-      if (currentSortingType === "new") {
-        sorted = limitedTasksList?.sort((a: TaskType, b: TaskType) => {
-          const A: Date = new Date(a.dateСreation);
-          const B: Date = new Date(b.dateСreation);
-          return B.getTime() - A.getTime();
-        });
-      } else {
-        sorted = limitedTasksList?.sort((a: TaskType, b: TaskType) => {
-          const A: Date = new Date(a.dateСreation);
-          const B: Date = new Date(b.dateСreation);
-          return A.getTime() - B.getTime();
-        });
-      }
-      setTasksToShow(sorted);
-    }
-  }, [currentSortingType, limitedTasksList]);
-
   const LoadingTasks = (): void => {
     if (
       document.documentElement.scrollHeight -
         (window.innerHeight + document.documentElement.scrollTop) <
       100
     ) {
-      setNumPage((numPage) => numPage + 1);
+      setIsFetching(true);
     }
   };
 
@@ -75,7 +94,15 @@ export default function TaskListPage() {
 
       <main className="main-task-list-content">
         <div className="left-block">
-          <SelectionBlock setCurrentSortingType={setCurrentSortingType} />
+          <SelectionBlock
+            typeSort={typeSort}
+            setTypeSort={setTypeSort}
+            setFilterMarks={setFilterMarks}
+            filterMarks={filterMarks}
+            setFilterPriority={setFilterPriority}
+            filterPriority={filterPriority}
+            setIsSorting={setIsSorting}
+          />
         </div>
         <div className="right-block">
           <Link to={`/${tasksCount}/edit`}>
@@ -84,10 +111,12 @@ export default function TaskListPage() {
             </div>
           </Link>
           {isLoading ? (
-            <div className="loading">LOADING...</div>
+            <div className="loading">
+              <Loading />
+            </div>
           ) : (
             <div className="tasksSection">
-              {limitedTasksList?.map((task: TaskType) => (
+              {tasksToShow.map((task: TaskType) => (
                 <TaskCard key={task.id} {...task} />
               ))}
             </div>

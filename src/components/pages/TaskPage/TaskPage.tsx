@@ -3,10 +3,11 @@ import {
   BackButton,
   ActiveButton,
 } from "../../modules/Buttons/Buttons";
-import { TaskType } from "../../modules/TaskCard/TaskCard";
 import { BlockTitle, GeneralTitle } from "../../modules/Titles/Titles";
-import { useState, useEffect } from "react";
+import { TaskType } from "../../modules/TaskCard/TaskCard";
+import Loading from "../../modules/Loading/Loading";
 import { Link, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import "./TaskPage.css";
 
 export default function TaskPage() {
@@ -21,15 +22,17 @@ export default function TaskPage() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`./api/task/id=${taskID}`)
+    const url: string = "https://example.com/task";
+    fetch(`${url}/id=${taskID}`)
       .then((response: Response) => response.json())
       .then((task: TaskType) => {
         setCurrentTask(task);
       })
       .finally(() => {
         setIsLoading(false);
-      });
-  }, []);
+      })
+      .catch((error) => console.log(`Error - ${error}`));
+  }, [taskID]);
 
   return (
     <>
@@ -55,7 +58,7 @@ export default function TaskPage() {
           </div>
         </div>
         {isLoading ? (
-          "LOADING..."
+          <Loading />
         ) : (
           <div className="task-block">
             <BlockTitle title="Название задачи" />

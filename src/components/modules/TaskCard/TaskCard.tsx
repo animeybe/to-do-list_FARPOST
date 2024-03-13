@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./TaskCard.css";
 
-export interface TaskType {
-  id?: number;
+export type TaskType = {
+  id: number;
   title: string;
   description: string;
   dateСreation: Date;
