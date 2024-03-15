@@ -8,7 +8,7 @@ let tasksList: Array<TaskType> = [];
 faker.seed(0);
 
 const tasksPerScroll: number = 15; // Количество задач для подгрузке при скролле (для динамической пагинации)
-let taskCount: number = 5000; // Изначальное количество задач
+let taskCount: number = 105; // Изначальное количество задач
 
 // Генерирую рандомные данные
 for (let index: number = 0; index < taskCount; index += 1) {
@@ -62,13 +62,18 @@ export const handlers = [
     const filterMarks: Array<string> = filterData.filterMarks;
     const filterPriority: Array<string> = filterData.filterPriority;
     const isSorting: boolean = filterData.isSorting;
+    console.log(page);
 
-    if (isSorting) page -= 1;
+    const lastPage: number = Math.ceil(taskCount / tasksPerScroll);
 
-    console.log(`PAGE - ${page}`);
+    if (isSorting && page !== lastPage) {
+      page -= 1;
+    }
 
-    const start: number = (page - 1) * tasksPerScroll;
-    const end: number = start + tasksPerScroll;
+    const start: number = isSorting ? 0 : (page - 1) * tasksPerScroll;
+    const end: number = isSorting
+      ? page * tasksPerScroll
+      : start + tasksPerScroll;
 
     function SortByDate(Type: string): Array<TaskType> {
       let sorted: Array<TaskType>;
