@@ -14,3 +14,7 @@
     font-weight: 600;
     letter-spacing: .5px;
 }
+.obligatory::after{
+    content: "*";
+    color: red;
+}

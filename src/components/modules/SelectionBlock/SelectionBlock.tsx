@@ -29,13 +29,13 @@ export default function SelectionBlock({
           </div>
           <div className="sort__item sort__item_new">
             <input
-              onChange={({ target: { value } }) => {
+              onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                 setIsSorting(true);
-                setTypeSort(value);
+                setTypeSort(e.target.value);
               }}
-              onClick={({ currentTarget }) => {
-                if (typeSort === currentTarget.value) {
-                  currentTarget.checked = false;
+              onClick={(e: React.MouseEvent<HTMLInputElement>): void => {
+                if (typeSort === e.currentTarget.value) {
+                  e.currentTarget.checked = false;
                   setIsSorting(true);
                   setTypeSort("default");
                 }
@@ -51,13 +51,13 @@ export default function SelectionBlock({
           </div>
           <div className="sort__item sort__item_old">
             <input
-              onChange={({ target: { value } }) => {
+              onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
                 setIsSorting(true);
-                setTypeSort(value);
+                setTypeSort(e.target.value);
               }}
-              onClick={({ currentTarget }) => {
-                if (typeSort === currentTarget.value) {
-                  currentTarget.checked = false;
+              onClick={(e: React.MouseEvent<HTMLInputElement>): void => {
+                if (typeSort === e.currentTarget.value) {
+                  e.currentTarget.checked = false;
                   setIsSorting(true);
                   setTypeSort("default");
                 }
@@ -79,12 +79,14 @@ export default function SelectionBlock({
             </div>
             <div className="priority__item priority__item_low">
               <input
-                onChange={({ target: { value } }) => {
-                  if (filterPriority.indexOf(value) === -1) {
-                    setFilterPriority([...filterPriority, value]);
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                  if (filterPriority.indexOf(e.target.value) === -1) {
+                    setFilterPriority([...filterPriority, e.target.value]);
                   } else {
                     setFilterPriority((filterPriority) =>
-                      filterPriority.filter((task) => task !== value)
+                      filterPriority.filter(
+                        (task: string): boolean => task !== e.target.value
+                      )
                     );
                   }
                   setIsSorting(true);
@@ -100,12 +102,14 @@ export default function SelectionBlock({
             </div>
             <div className="priority__item priority__item_normal">
               <input
-                onChange={({ target: { value } }) => {
-                  if (filterPriority.indexOf(value) === -1) {
-                    setFilterPriority([...filterPriority, value]);
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                  if (filterPriority.indexOf(e.target.value) === -1) {
+                    setFilterPriority([...filterPriority, e.target.value]);
                   } else {
                     setFilterPriority((filterPriority) =>
-                      filterPriority.filter((task) => task !== value)
+                      filterPriority.filter(
+                        (task: string): boolean => task !== e.target.value
+                      )
                     );
                   }
                   setIsSorting(true);
@@ -121,12 +125,14 @@ export default function SelectionBlock({
             </div>
             <div className="priority__item priority__item_high">
               <input
-                onChange={({ target: { value } }) => {
-                  if (filterPriority.indexOf(value) === -1) {
-                    setFilterPriority([...filterPriority, value]);
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                  if (filterPriority.indexOf(e.target.value) === -1) {
+                    setFilterPriority([...filterPriority, e.target.value]);
                   } else {
                     setFilterPriority((filterPriority) =>
-                      filterPriority.filter((task) => task !== value)
+                      filterPriority.filter(
+                        (task: string): boolean => task !== e.target.value
+                      )
                     );
                   }
                   setIsSorting(true);
@@ -147,12 +153,14 @@ export default function SelectionBlock({
             </div>
             <div className="mark__item mark__item_low">
               <input
-                onChange={({ target: { value } }) => {
-                  if (filterMarks.indexOf(value) === -1) {
-                    setFilterMarks([...filterMarks, value]);
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                  if (filterMarks.indexOf(e.target.value) === -1) {
+                    setFilterMarks([...filterMarks, e.target.value]);
                   } else {
                     setFilterMarks((filterMarks) =>
-                      filterMarks.filter((task) => task !== value)
+                      filterMarks.filter(
+                        (task: string): boolean => task !== e.target.value
+                      )
                     );
                   }
                   setIsSorting(true);
@@ -168,12 +176,14 @@ export default function SelectionBlock({
             </div>
             <div className="mark__item mark__item_new">
               <input
-                onChange={({ target: { value } }) => {
-                  if (filterMarks.indexOf(value) === -1) {
-                    setFilterMarks([...filterMarks, value]);
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                  if (filterMarks.indexOf(e.target.value) === -1) {
+                    setFilterMarks([...filterMarks, e.target.value]);
                   } else {
                     setFilterMarks((filterMarks) =>
-                      filterMarks.filter((task) => task !== value)
+                      filterMarks.filter(
+                        (task: string): boolean => task !== e.target.value
+                      )
                     );
                   }
                   setIsSorting(true);
@@ -189,12 +199,14 @@ export default function SelectionBlock({
             </div>
             <div className="mark__item mark__item_new">
               <input
-                onChange={({ target: { value } }) => {
-                  if (filterMarks.indexOf(value) === -1) {
-                    setFilterMarks([...filterMarks, value]);
+                onChange={(e: React.ChangeEvent<HTMLInputElement>): void => {
+                  if (filterMarks.indexOf(e.target.value) === -1) {
+                    setFilterMarks([...filterMarks, e.target.value]);
                   } else {
                     setFilterMarks((filterMarks) =>
-                      filterMarks.filter((task) => task !== value)
+                      filterMarks.filter(
+                        (task: string): boolean => task !== e.target.value
+                      )
                     );
                   }
                   setIsSorting(true);

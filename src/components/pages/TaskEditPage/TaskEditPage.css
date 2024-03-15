@@ -1,6 +1,18 @@
 .main-task-edit-content {
 }
-.buttons-block {
+.upper-block {
+    height: 3em;
+    width: 100%;
+    display: flex;
+}
+.buttons-edit-block {
+}
+.error-block {
+    height: 3em;
+    display: flex;
+    align-items: center;
+
+    margin-left: 20px;
 }
 .task-edit-block {
     display: flex;
@@ -46,4 +58,7 @@
 }
 .input-marks__mark_select {
     background-color: #CECECE;
+}
+.error-block {
+    margin-bottom: 20px;
 }

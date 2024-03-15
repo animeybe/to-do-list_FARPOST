@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./TaskCard.css";
 
@@ -9,7 +9,7 @@ export type TaskType = {
   dateСreation: Date;
   priority: string;
   marks: Array<string>;
-}
+};
 
 export function TaskCard({
   id,
@@ -17,10 +17,10 @@ export function TaskCard({
   dateСreation,
   priority,
   marks,
-}: TaskType) {
+}: TaskType): ReactElement {
   const [dateСreationAsString, setDateСreationAsString] = useState<string>();
 
-  useEffect(() => {
+  useEffect((): void => {
     const dateTask: Date = new Date(dateСreation);
     const dateNow: Date = new Date();
     if (Math.abs(dateNow.getTime() - dateTask.getTime()) / 36e5 < 21) {

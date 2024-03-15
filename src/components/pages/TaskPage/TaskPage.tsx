@@ -1,38 +1,71 @@
+import { BlockTitle, GeneralTitle } from "../../modules/Titles/Titles";
+import { TaskType } from "../../modules/TaskCard/TaskCard";
+import Loading from "../../modules/Loading/Loading";
+import { Link, useParams, Params, useNavigate } from "react-router-dom";
+import { useState, useEffect, ReactElement } from "react";
+import "./TaskPage.css";
 import {
   CloseButton,
   BackButton,
   ActiveButton,
 } from "../../modules/Buttons/Buttons";
-import { BlockTitle, GeneralTitle } from "../../modules/Titles/Titles";
-import { TaskType } from "../../modules/TaskCard/TaskCard";
-import Loading from "../../modules/Loading/Loading";
-import { Link, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import "./TaskPage.css";
 
-export default function TaskPage() {
+export default function TaskPage(): ReactElement {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [currentTask, setCurrentTask] = useState<TaskType>();
 
-  const params = useParams();
+  const navigate = useNavigate();
+
+  const params: Readonly<Params<string>> = useParams();
   const taskID: number = Number(params.id);
   const currentTaskDateСreation: Date = new Date(
     String(currentTask?.dateСreation)
   );
 
-  useEffect(() => {
+  useEffect((): void => {
+    const url: string = "https://example.com/task";
+
+    fetch(`${url}/count`)
+      .then((response: Response) => response.json())
+      .then((tasksCount: number): void => {
+        if (tasksCount - 1 < taskID) {
+          navigate("/");
+        }
+      })
+      .catch((error: string): void => console.log(`Error - ${error}`));
+  }, []);
+
+  useEffect((): void => {
     setIsLoading(true);
     const url: string = "https://example.com/task";
     fetch(`${url}/id=${taskID}`)
       .then((response: Response) => response.json())
-      .then((task: TaskType) => {
+      .then((task: TaskType): void => {
         setCurrentTask(task);
       })
-      .finally(() => {
+      .finally((): void => {
         setIsLoading(false);
       })
-      .catch((error) => console.log(`Error - ${error}`));
+      .catch((error: string): void => console.log(`Error - ${error}`));
   }, [taskID]);
+
+  const handleClickDelete = (): Response | null => {
+    const requestOptions = {
+      method: "DELETE",
+      body: JSON.stringify({ taskID: taskID }),
+    };
+
+    const url: string = "https://example.com/task";
+    fetch(`${url}/delete`, requestOptions)
+      .then((response: Response) => response.json())
+      .then((data: { status: number }): void => {
+        if (data.status === 200) {
+          navigate("/");
+        }
+      })
+      .catch((error: string): void => console.log(`Error - ${error}`));
+    return null;
+  };
 
   return (
     <>
@@ -53,7 +86,7 @@ export default function TaskPage() {
           </div>
           <div className="buttons-block__delete">
             <Link to={`/${taskID}/edit`}>
-              <CloseButton text="Удалить" />
+              <CloseButton onClick={handleClickDelete} text="Удалить" />
             </Link>
           </div>
         </div>
