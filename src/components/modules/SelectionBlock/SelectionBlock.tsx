@@ -37,7 +37,7 @@ export default function SelectionBlock({
                 if (typeSort === e.currentTarget.value) {
                   e.currentTarget.checked = false;
                   setIsSorting(true);
-                  setTypeSort("default");
+                  setTypeSort("");
                 }
               }}
               className="radio"
@@ -59,7 +59,7 @@ export default function SelectionBlock({
                 if (typeSort === e.currentTarget.value) {
                   e.currentTarget.checked = false;
                   setIsSorting(true);
-                  setTypeSort("default");
+                  setTypeSort("");
                 }
               }}
               className="radio"

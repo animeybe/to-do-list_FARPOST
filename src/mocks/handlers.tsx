@@ -30,6 +30,7 @@ type RequestGetTask = {
   sort: string;
   filterMarks: Array<string>;
   filterPriority: Array<string>;
+  isSorting: boolean;
 };
 
 function handleRequestGetTask(
@@ -56,12 +57,15 @@ export const handlers = [
   handleRequestGetTask(async ({ request }) => {
     const filterData: RequestGetTask = await request.json();
 
-    const page: number = filterData.page;
+    let page: number = filterData.page;
     const sort: string = filterData.sort;
     const filterMarks: Array<string> = filterData.filterMarks;
     const filterPriority: Array<string> = filterData.filterPriority;
+    const isSorting: boolean = filterData.isSorting;
 
-    console.log(page);
+    if (isSorting) page -= 1;
+
+    console.log(`PAGE - ${page}`);
 
     const start: number = (page - 1) * tasksPerScroll;
     const end: number = start + tasksPerScroll;
@@ -88,8 +92,8 @@ export const handlers = [
 
     if (filterMarks.length !== 0) {
       ListToSend = ListToSend.filter((task: TaskType): boolean => {
-        return task.marks.some((element: string): boolean => {
-          return filterMarks.indexOf(element) !== -1;
+        return filterMarks.every((mark: string): boolean => {
+          return task.marks.indexOf(mark) !== -1;
         });
       });
     }

@@ -31,6 +31,7 @@ export default function TaskListPage(): ReactElement {
         sort: typeSort,
         filterMarks: filterMarks,
         filterPriority: filterPriority,
+        isSorting: isSorting
       };
       // Опции запроса
       const requestOptions = {
